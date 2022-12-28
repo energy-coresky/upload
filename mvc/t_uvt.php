@@ -19,17 +19,12 @@ class t_uvt extends Model_t
         return SQL::open($cfg['connection']);
     }
 
-    function save() {
-    }
-
-    function listing() {
-    }
-
     function get_file($id, $is_download = false) {
         if (!$row = $this->one((int)$id, '>'))
             return;
         $ary = explode(' ', $row->type);
-        if ($is_download && false === ($size = @filesize("$this->dir/$id.$ary[1]")))
+        $size = @filesize($fn = "$this->dir/$id.$ary[1]");
+        if ($is_download && false === $size)
             return;
         while (ob_get_level())
             ob_end_clean();
@@ -44,10 +39,10 @@ class t_uvt extends Model_t
             header("Content-Length: $size");
         }
         if ($is_php) {
-            echo css(['~/sky.css']);
-            echo Display::php(file_get_contents("$this->dir/$id.$ary[1]"));
+            echo css(['~/m/sky.css']);
+            echo Display::php(file_get_contents($fn));
         } else {
-            readfile("$this->dir/$id.$ary[1]");
+            readfile($fn);
         }
     }
 
@@ -98,7 +93,8 @@ class t_uvt extends Model_t
         echo 'File don\'t moved';
     }
 
-    function crop($id, $x0, $y0, $x1, $y1, $szx, $szy) {
+    function crop($post) {
+        extract($post);
         if (!$row = $this->one(qp(' id=$.', $id), '>'))
             return false;
         $ary = explode(' ', $row->type);

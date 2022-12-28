@@ -20,8 +20,7 @@ class Upload
     }
 
     static function get_file($id, $is_download = false) {
-        Plan::$ware = 'upload';
-        MVC::$mc->t_uvt->get_file($id, $is_download);
+        Upload::model()->get_file($id, $is_download);
         throw new Stop;
     }
 

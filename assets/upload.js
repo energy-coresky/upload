@@ -146,7 +146,7 @@ var upload = {
                 if (upload.file_delete_c)
                     upload.file_delete_c();
             }
-        }, upload.controller);//_file_delete
+        }, upload.controller);
     },
 
     post: function(url, data, func) {
