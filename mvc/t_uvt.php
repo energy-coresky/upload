@@ -31,9 +31,11 @@ class t_uvt extends Model_t
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
         $is_php = 'text/x-php' == $ary[0];
+        $is_img = 'image/' == substr($ary[0], 0, 6);
         if ('text/' == substr($ary[0], 0, 5))
             $ary[0] = $is_php ? "text/html; charset=$ary[2]" : "$ary[0]; charset=$ary[2]";
-        header('Content-Type: ' . ($is_download ? 'application/octet-stream' : $ary[0]));
+        MVC::mime($is_download ? 'application/octet-stream' : $ary[0]); # Content-Type
+
         if ($is_download) {
             header(sprintf('Content-Disposition: attachment; filename="%s"', $row->name));
             header("Content-Length: $size");
