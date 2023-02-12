@@ -2,6 +2,9 @@
 
 
 #.crop_code //////////////////////////////////////////////////////////////////////////////
+#if(0)
+    @inc(app_crop_code)
+#else
 <table width="100%" id="crop" cellpadding="5">
 <tr>
     <td width="75%">
@@ -15,6 +18,5 @@
     </td>
 </tr>
 </table>
+#end
 #.crop_code
-
-
