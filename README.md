@@ -1,12 +1,9 @@
 
 # Upload
 
-Это production ware. Если в SKY-приложении нужна загрузка файлов - подключите этот
-продукт и продолжите программирование. Ware включает 1 таблицу в БД, 1 контроллер,
-класс Upload, 1 модель для работы с таблицей, 1 js-файл и 1 шаблон Jet для визуализации
-страницы для обрезания (crop) картинок до нужных размеров.
-
-Загрузка файлов происходит с помощью AJAX и Drug-n-drop. Также имеется
-возможность наблюдать прогресс загрузки больших файлов.
+Production ware. Use this product if your app need file uploads.
+Ware contain 1 table in the database, 1 controller,
+class Upload, 1 model to work with table, 1 js-file & 1 Jet template for visualization
+crop images page.
 
 Status: _initial version_
