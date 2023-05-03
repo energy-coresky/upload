@@ -1,10 +1,9 @@
 <?php
 
-class c_upload extends Controller
+class default_c extends Controller
 {
     function j_crop_code() {
-        $cfg = array_explode(unl(Plan::cfg_g('options.cfg')));
-        $sizes = explode(',', $cfg['crop_sizes']);
+        $sizes = explode(',', Upload::cfg()->crop_sizes);
         return ['opt' => option(0, array_combine($sizes, $sizes))];
     }
 
@@ -20,5 +19,11 @@ class c_upload extends Controller
     function j_delete($id) {
         $n = $this->t_uvt->remove(qp(' id=$.', $id));
         echo 1 == $n ? 'ok' : '-';
+    }
+
+    function a_test() {
+        if (!DEV)
+            return 404;
+        echo implode('<br>', glob($this->t_uvt->get_dir() . '/*'));
     }
 }

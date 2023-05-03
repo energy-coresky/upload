@@ -1,25 +1,25 @@
 <?php
 
-class Ware extends Ware_make
+class Ware extends Wares
 {
     private $tables = [
         'file' => [
-            'id' => ,
-            'obj' => ,
-            'obj_id' => ,
-            'name' => ,
-            'size' => ,
-            'type' => ,
-            'x_doctype' => ,
-            'comment' => ,
-            'dt_c' => ,
-            'c_user_id' => ,
-            'dt_u' => ,
-            'u_user_id' => ,
+            'id' => '',
+            'obj' => '',
+            'obj_id' => '',
+            'name' => '',
+            'size' => '',
+            'type' => '',
+            'x_doctype' => '',
+            'comment' => '',
+            'dt_c' => '',
+            'c_user_id' => '',
+            'dt_u' => '',
+            'u_user_id' => '',
         ]
     ];
 
-    function options() {
+    function opt_form() {
         return [
             'connection' => ['Database connection'],
             'table' => ['Table name'],
@@ -31,7 +31,8 @@ class Ware extends Ware_make
     }
 
     function install() {
-        $this->create_tables();
+        //$this->create_tables();
+        return 'tables: 1';
     }
 
     function uninstall() {

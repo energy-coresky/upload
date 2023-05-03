@@ -13,10 +13,14 @@ class t_uvt extends Model_t
     //private $ext_out;
 
     function head_y() {
-        $cfg = array_explode(unl(Plan::cfg_g('options.cfg')));
-        $this->dir = $cfg['dir'];
-        $this->table = $cfg['table'];
-        return SQL::open($cfg['connection']);
+        $cfg = Upload::cfg();
+        $this->dir = $cfg->dir;
+        $this->table = $cfg->table;
+        return SQL::open($cfg->connection);
+    }
+
+    function get_dir() {
+        return $this->dir;
     }
 
     function get_file($id, $is_download = false) {

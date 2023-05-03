@@ -17,7 +17,7 @@ $.fn.serializeFiles = function() {
 };
 
 var upload = {
-    controller: 'upload',
+    jact: 'main',
     max_filesize: 5000000,
     post_files: false,
 
@@ -55,7 +55,7 @@ var upload = {
                     upload.post_files.prev().remove();
                     var formData = new FormData();
                     formData.append('file', file);
-                    ajax('file_tmp', formData, function(r) {
+                    ajax('', formData, function(r) {
                         el.html('<div class="doc-file-name">' + file.name + '</div>');
                         if (r.id !== undefined) {
                             el.siblings('input[type=hidden]').val(r.id);
@@ -63,16 +63,16 @@ var upload = {
                                 + '" onclick="upload.file_delete(this, ' + r.id + ')"></a>';
                             el.append(s0);
                             if (r.img == 1 && img) { // crop image if required
-                                ajax('crop_code', {}, function(h) {
+                                ajax('', function(h) {
                                     box(h);
                                     r.place = el;
                                     upload.crop(r);
-                                }, upload.controller);
+                                }, 'crop_code', upload.jact);
                             }
                         } else {
                             sky.err(r);
                         }
-                    }, upload.controller);
+                    }, 'file_tmp', upload.jact);
                 }
             });
         });
@@ -119,11 +119,11 @@ var upload = {
                     y1: Math.round((top + rh) * r.height / y) + 2,
                     id: r.id, szx: size[1], szy: size[2]
                 };
-                ajax('crop', q, function() {
+                ajax('', q, function() {
                     var html = '<a class="delete-img" href="javascript:;" onclick="upload.file_delete(this, ' + r.id + ')"></a>';
                     r.place.html('<img style="position:absolute" src="file?id' + r.id + '&_"/>' + html);
                     sky.hide();
-                }, upload.controller);
+                }, 'crop', upload.jact);
             });
             $(document).mousemove(function(e) {
                 if (flag)
@@ -138,7 +138,7 @@ var upload = {
 
     file_delete_c: false,
     file_delete: function(el, id) {
-        ajax('delete', {id:id}, function(r) {
+        ajax('', {id:id}, function(r) {
             if ('ok' == r) {
                 var imgs = $(el).parent(), tpl = imgs.siblings('div:eq(0)').html();
                 imgs.html(tpl);
@@ -146,12 +146,13 @@ var upload = {
                 if (upload.file_delete_c)
                     upload.file_delete_c();
             }
-        }, upload.controller);
+        }, 'delete', upload.jact);
     },
 
-    post: function(url, data, func) {
+    skypost: null,
+    post: function(url, data, func, jact) {
         if (!upload.post_files)
-            return $.post(url, data, func);
+            return upload.skypost(url, data, func, jact);
         var el = upload.post_files === true ? false : upload.post_files;
         upload.post_files = false;
         $.ajax({
@@ -163,6 +164,7 @@ var upload = {
             method: 'POST',
             type: 'POST', // For jQuery < 1.9
             success: func,
+            headers: {'X-Action-J': jact || 'main'},
             xhr: function() {
                 var a = $.ajaxSettings.xhr();
                 if (a.upload) {
@@ -181,6 +183,7 @@ var upload = {
     }
 };
 
+upload.skypost = sky.post;
 sky.post = upload.post;
 
 $(function() {

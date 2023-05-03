@@ -8,8 +8,13 @@ class Upload
         IMAGETYPE_GIF => 'gif',
     ];
 
-    static function js_up() {
+    static function up() {
         ;
+    }
+
+    static function cfg() {
+        $cfg = Plan::_r('conf.php')['app']['options'];
+        return (object)array_explode(unl($cfg));
     }
 
     static function model() {
