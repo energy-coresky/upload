@@ -1,6 +1,9 @@
 <?php
 
-class Upload
+namespace upload;
+use Plan;
+
+class ant
 {
     static $image = [
         IMAGETYPE_JPEG => 'jpg',
@@ -8,30 +11,26 @@ class Upload
         IMAGETYPE_GIF => 'gif',
     ];
 
-    static function a_up() {
-        ;
-    }
-
     static function cfg() {
         $cfg = Plan::_r('conf.php')['app']['options'];
-        return (object)strbang(unl($cfg));
+        return (object)\strbang(\unl($cfg));
     }
 
     static function model() {
         $prev = Plan::set('upload');
-        $model = MVC::$mc->t_uvt;
+        $model = \MVC::$mc->x_able;
         Plan::$ware = $prev;
         return $model;
     }
 
     static function get_file($id, $is_download = false) {
-        Upload::model()->get_file($id, $is_download);
-        throw new Stop;
+        self::model()->get_file($id, $is_download);
+        throw new \Stop;
     }
 
     static function read_len($fn, $len = 1e4) {
         if (!$rc = fopen($fn, "rb"))
-            throw new Error("Cannot open file `$fn` for reading");
+            throw new \Error("Cannot open file `$fn` for reading");
         $bin = fread($rc, $len);
         fclose($rc);
         return mb_strcut($bin, 0, $len);///????
@@ -55,7 +54,7 @@ class Upload
             }
             $ap .= " $data[0] $data[1]";
         } elseif ('text/' == substr($mime, 0, 5)) {
-            $ap .= ' ' . Rare::enc_detect(self::read_len($fn));
+            $ap .= ' ' . \Rare::enc_detect(self::read_len($fn));
         }
         return [$ap, $ext, $out];
     }

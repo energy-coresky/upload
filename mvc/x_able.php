@@ -1,6 +1,8 @@
 <?php
 
-class t_uvt extends Model_t
+namespace upload;
+
+class t_able extends \Model_t
 {
     private $handle = [
         'jpg' => 'imagecreatefromjpeg',
@@ -13,10 +15,10 @@ class t_uvt extends Model_t
     //private $ext_out;
 
     function head_y() {
-        $cfg = Upload::cfg();
+        $cfg = \upload\ant::cfg();
         $this->dir = $cfg->dir;
         $this->table = $cfg->table;
-        return SQL::open($cfg->connection);
+        return \SQL::open($cfg->connection);
     }
 
     function get_dir() {
@@ -38,15 +40,15 @@ class t_uvt extends Model_t
         $is_img = 'image/' == substr($ary[0], 0, 6);
         if ('text/' == substr($ary[0], 0, 5))
             $ary[0] = $is_php ? "text/html; charset=$ary[2]" : "$ary[0]; charset=$ary[2]";
-        MVC::mime($is_download ? 'application/octet-stream' : $ary[0]); # Content-Type
+        \MVC::mime($is_download ? 'application/octet-stream' : $ary[0]); # Content-Type
 
         if ($is_download) {
             header(sprintf('Content-Disposition: attachment; filename="%s"', $row->name));
             header("Content-Length: $size");
         }
         if ($is_php) {
-            echo css(['~/m/sky.css']);
-            echo Display::php(file_get_contents($fn));
+            echo \css(['~/m/sky.css']);
+            echo \Display::php(file_get_contents($fn));
         } else {
             readfile($fn);
         }
@@ -83,7 +85,7 @@ class t_uvt extends Model_t
             echo $file['error'];
             return;
         }
-        list ($mime, $ext, $out) = Upload::type($file['tmp_name'], $file['name']);
+        list ($mime, $ext, $out) = \upload\ant::type($file['tmp_name'], $file['name']);
         $id = $this->insert([
             '!dt_c' => 'now()',
             '.c_user_id' => $user->id,
@@ -114,7 +116,7 @@ class t_uvt extends Model_t
 
     function img_load($fn) {
         list($x, $y, $type) = getimagesize($fn);
-        if (!$this->ext_in = Upload::$image[$type] ?? false)
+        if (!$this->ext_in = \upload\ant::$image[$type] ?? false)
             return false;
         $func = $this->handle[$this->ext_in];
         return [$x, $y, $func($fn)];
@@ -133,6 +135,6 @@ class t_uvt extends Model_t
         }
         $out = imagecreatetruecolor($x, $y);
         imagecopyresampled($out, $im, 0, 0, 0, 0, $x, $y, $width, $height);
-        imagejpeg($out, WWW . "img/task/$fn_out", 80);
+        imagejpeg($out, \WWW . "img/task/$fn_out", 80);
     }
 }
