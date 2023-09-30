@@ -1,6 +1,7 @@
 <?php
 
 namespace upload;
+use function qp;
 
 class t_able extends \Model_t
 {
@@ -94,7 +95,7 @@ class t_able extends \Model_t
             'type' => $file['type'] = $mime,
         ]);
         if (move_uploaded_file($file['tmp_name'], "$this->dir/$id.$ext")) {
-            json($out + ['id' => $id]);
+            \json($out + ['id' => $id]);
             return;
         }
         $this->delete($id);
