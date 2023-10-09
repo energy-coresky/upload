@@ -1,7 +1,6 @@
 #.jet install upload ware template
 
-#.install
-+
+#.install ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 @inc(__dev.title)
 <div style="margin:10px;">
 @if($exist)
@@ -19,7 +18,7 @@
 </div>
 #.install
 
-#.table
+#.table -----------------------------------------------------------------------------------------------------------
 @if('MySQLi' == $base)
 CREATE TABLE `{{$table}}` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,8 +41,32 @@ CREATE TABLE `{{$table}}` (..)
 @else
   <b>{{$base}}</b> driver NOT supperted for now
 ~if
-#.table MyISAM InnoDB CSV
+#.table.rewrite
+<pre style="padding:20px 30px; margin-top:10px; background:lightyellow">
+if ($cnt && '{{$tune}}' == $surl[0]) {
+    common_c::$tune = array_shift($surl);
+    $cnt--;
+}
+</pre>
+#.rewrite
 
-#.uninstall
+#.update ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 +2do
+#.update
+
+#.uninstall ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+@inc(__dev.title)
+<div style="margin:10px;">
+  <h1>Uninstall done {{$object->off_ware()}}</h1>
+  <h3>Manual steps to do:</h3>
+  <pre>
+    1. In SQL:
+    <b>DROP TABLE `{{$table}}`</b><br>
+    2. On filesystem:
+    Drop directory <b>{{$dir}}</b><br>
+    3. In application code:
+    Check the application & remove all reference to this ware.
+    Delete Coresky rewrite:<br>@inc(.rewrite)
+  </pre>
+</div>
 #.uninstall

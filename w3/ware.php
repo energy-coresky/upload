@@ -5,6 +5,7 @@ namespace upload;
 class ware extends \Wares
 {
     public $bases = ['SQLite3', 'MySQLi'];
+    public $engines = ['InnoDB', 'MyISAM', 'CSV'];
 
     function form() {
         return [
@@ -16,19 +17,28 @@ class ware extends \Wares
         ];
     }
 
-    function install($mode) {
+    function vars() {
         $model = ant::model();
         $dd = $model->dd();
         $dir = $model->get_dir();
-        return [
-            'exist' => $model->get_table($table),
-            'table' => $table,
-            'dir' => $dir,
-            'base' => $dd->name,
-            'ok' => in_array($dd->name, $this->bases),
+        $exist = $model->get_table($table);
+        $object = $this;
+        $tune = \Plan::_rq(['main', 'wares.php'])['upload']['tune'];
+        return compact(array_keys(get_defined_vars()));
+    }
+
+    function install($mode) {
+        $vars = $this->vars();
+        return $vars + [
+            'base' => $base = $vars['dd']->name,
+            'ok' => in_array($base, $this->bases),
         ];
     }
 
     function uninstall($mode) {
+        return $this->vars();
+    }
+
+    function update($mode) {
     }
 }
