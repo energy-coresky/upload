@@ -1,0 +1,49 @@
+#.jet install upload ware template
+
+#.install
++
+@inc(__dev.title)
+<div style="margin:10px;">
+@if($exist)
+  Table <b>{{$table}}</b> exist
+@else
+  Table <b>{{$table}}</b> NOT exist<br>
+  <pre>@inc(.table)</pre>
+~if
+<hr>
+@if(is_dir($dir))
+  Directory <b>{{$dir}}</b> exist
+@else
+  Directory <b>{{$dir}}</b> NOT exist
+~if
+</div>
+#.install
+
+#.table
+@if('MySQLi' == $base)
+CREATE TABLE `{{$table}}` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `obj` enum('com','per','prj','act','face') DEFAULT NULL,
+  `obj_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `size` int(11) DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `x_doctype` int(11) unsigned DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `dt_c` datetime NOT NULL,
+  `c_user_id` int(11) unsigned NOT NULL,
+  `dt_u` datetime DEFAULT NULL,
+  `u_user_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `i_tb_file` (`obj`,`obj_id`)
+) ENGINE=%engine% DEFAULT CHARSET=utf8
+@elseif('SQLite3' == $base)
+CREATE TABLE `{{$table}}` (..)
+@else
+  <b>{{$base}}</b> driver NOT supperted for now
+~if
+#.table MyISAM InnoDB CSV
+
+#.uninstall
++2do
+#.uninstall

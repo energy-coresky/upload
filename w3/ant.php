@@ -12,8 +12,7 @@ class ant
     ];
 
     static function cfg() {
-        $cfg = Plan::_r('conf.php')['app']['options'];
-        return (object)\strbang(\unl($cfg));
+        return (object)\SKY::$plans['upload']['app']['options'];
     }
 
     static function model() {

@@ -1,41 +1,34 @@
 <?php
 
-class Ware extends Wares
-{
-    private $tables = [
-        'file' => [
-            'id' => '',
-            'obj' => '',
-            'obj_id' => '',
-            'name' => '',
-            'size' => '',
-            'type' => '',
-            'x_doctype' => '',
-            'comment' => '',
-            'dt_c' => '',
-            'c_user_id' => '',
-            'dt_u' => '',
-            'u_user_id' => '',
-        ]
-    ];
+namespace upload;
 
-    function opt_form() {
+class ware extends \Wares
+{
+    public $bases = ['SQLite3', 'MySQLi'];
+
+    function form() {
         return [
-            'connection' => ['Database connection'],
-            'table' => ['Table name'],
-            'dir' => ['Upload directory'],
-            'rewrite' => ['Rewrite'],
-            'scheme' => ['Scheme'],
-            'use_crop' => ['Use crop'],
+            'connection' => ['Database connection', 'select', $this->databases()],
+            'table' => ['Table name', '', '', 'file'],
+            'dir' => ['Upload directory', '', '', 'var/upload'],
+            'use_crop' => ['Use crop', 'chk'],
+            'crop_sizes' => ['Crop Sizes', '', '', '200 x 200,200 x 500'],
         ];
     }
 
-    function install() {
-        //$this->create_tables();
-        return 'tables: 1';
+    function install($mode) {
+        $model = ant::model();
+        $dd = $model->dd();
+        $dir = $model->get_dir();
+        return [
+            'exist' => $model->get_table($table),
+            'table' => $table,
+            'dir' => $dir,
+            'base' => $dd->name,
+            'ok' => in_array($dd->name, $this->bases),
+        ];
     }
 
-    function uninstall() {
-        // 2do
+    function uninstall($mode) {
     }
 }

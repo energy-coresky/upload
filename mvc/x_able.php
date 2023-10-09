@@ -16,7 +16,7 @@ class t_able extends \Model_t
     //private $ext_out;
 
     function head_y() {
-        $cfg = \upload\ant::cfg();
+        $cfg = ant::cfg();
         $this->dir = $cfg->dir;
         $this->table = $cfg->table;
         return \SQL::open($cfg->connection);
@@ -24,6 +24,11 @@ class t_able extends \Model_t
 
     function get_dir() {
         return $this->dir;
+    }
+
+    function get_table(&$table) {
+        $table = $this->dd->pref . $this->table;
+        return $this->dd->_tables($this->table);
     }
 
     function get_file($id, $is_download = false) {
