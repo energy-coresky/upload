@@ -20,4 +20,4 @@ for j_.. actions:
 <script>upload.jact = 'u'</script>
 ```
 
-Where 'u' - tuning value (any of /^[\w+\-]+$/)
+Where 'u' - tuning value (any of `/^[\w+\-]+$/`)
