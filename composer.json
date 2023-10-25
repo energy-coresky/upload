@@ -1,0 +1,21 @@
+{
+  "name": "coresky/upload",
+  "license": "MIT",
+  "description": "Prod-ware for file uploads",
+  "keywords": [
+    "upload",
+    "coresky framework",
+    "crop image",
+    "async file uploads"
+  ],
+  "require": {
+    "php": ">7.0",
+    "energy/air": "*"
+  },
+  "authors": [
+    {
+      "name": "Energy",
+      "homepage": "https://coresky.net/"
+    }
+  ]
+}
