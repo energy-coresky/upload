@@ -24,13 +24,13 @@ class ware extends \Wares
         $dir = $model->get_dir();
         $exist = $model->get_table($table);
         $object = $this;
-        $tune = Plan::_rq(['main', 'wares.php'])['upload']['tune'];
+        $tune = Plan::_r(['main', 'wares.php'])['upload']['tune'];
         return compact(array_keys(get_defined_vars()));
     }
 
     function install($mode) {
         $data = \view('ware.data', $vars = $this->vars());
-        [$sql, $rewrite, $ajax] = explode("\n~\n", unl($data));
+        [$sql, $rewrite, $ajax] = explode("\n~\n", \unl($data));
         extract($vars, EXTR_REFS);
         if ($mode) {
             is_dir($dir) or mkdir($dir, 0777, true);
@@ -48,7 +48,7 @@ class ware extends \Wares
             ["Create <b>$dir</b> dir", 'checkbox', ' disabled', !is_dir($dir)],
             ["Table <b>$table</b>", 'ni', $exist ? 'exist' : 'NOT exist'],
             ["Create <b>$table</b> table", 'checkbox', ' disabled', !$exist],
-            ['', 'ni', pre($sql)],
+            ['', 'ni', \pre($sql)],
         ];
         if ('MySQLi' == $dd->name && !$exist)
             $form += ['engine' => ['Select %engine%', 'select', $this->engines]];
