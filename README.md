@@ -1,23 +1,33 @@
 
 # Upload
 
-Production ware. Use this product if your app need file uploads.
-Ware contain 1 table in the database, 1 controller,
-class Upload, 1 model to work with table, 1 js-file & 1 Jet template for visualization
-crop images page.
+Production ware. Use this product if your app need upload files. Custom croping images included.
+
+Essence | Count
+:----- | :-----
+Installer class | present (**upload\\ware**)
+_w3_ class | 1 (**upload\\ant**)
+Table in the database | 1, custom name
+Controller | 1, tune used
+Model | 1
+Jet templates | 2
+_Asset_ files | 1 (**upload.js**)
+
 
 Status: _under development_
 
-Use this ware with rewrite for a_.. actions:
+## Rewrite for a_.. actions:
 ```php
-if ($cnt && 'u' == $surl[0])
+if ($cnt && 'upload' == $surl[0]) {
     common_c::$tune = array_shift($surl);
+    $cnt--;
+}
 ```
 
-for j_.. actions:
+## For j_.. actions add to HTML:
 ```html
 <script src="w/upload/upload.js"></script>
-<script>upload.jact = 'u'</script>
+<script>upload.jact = 'upload'</script>
 ```
 
-Where 'u' - tuning value (any of `/^[\w+\-]+$/`)
+Where 'upload' - tuning value (any of `/^[\w+\-]+$/`)

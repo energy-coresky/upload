@@ -23,7 +23,17 @@ CREATE TABLE `{{$table}}` (
   PRIMARY KEY (`id`)
 ) ENGINE=%engine% DEFAULT CHARSET=utf8
 @elseif('SQLite3' == $dd->name)
-CREATE TABLE `{{$table}}` (..)
+CREATE TABLE `{{$table}}` (
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "name" VARCHAR(255) DEFAULT '',
+  "size" INTEGER DEFAULT NULL,
+  "type" VARCHAR(255) NOT NULL,
+  "comment" VARCHAR(255) DEFAULT NULL,
+  "dt_c" DATETIME NOT NULL,
+  "c_user_id" INTEGER NOT NULL,
+  "dt_u" DATETIME DEFAULT NULL,
+  "u_user_id" INTEGER DEFAULT NULL
+)
 @else
   <b>{{$dd->name}}</b> driver <r>NOT supperted for now</r>
 ~if
