@@ -12,6 +12,8 @@
 @if('MySQLi' == $dd->name)
 CREATE TABLE `{{$table}}` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `obj` varchar(10) DEFAULT NULL,
+  `obj_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL DEFAULT '',
   `size` int(11) DEFAULT NULL,
   `type` varchar(255) NOT NULL,
@@ -25,6 +27,8 @@ CREATE TABLE `{{$table}}` (
 @elseif('SQLite3' == $dd->name)
 CREATE TABLE `{{$table}}` (
   "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "obj" VARCHAR(10) DEFAULT NULL,
+  "obj_id" INTEGER NOT NULL DEFAULT '0',
   "name" VARCHAR(255) DEFAULT '',
   "size" INTEGER DEFAULT NULL,
   "type" VARCHAR(255) NOT NULL,
@@ -35,7 +39,7 @@ CREATE TABLE `{{$table}}` (
   "u_user_id" INTEGER DEFAULT NULL
 )
 @else
-  <b>{{$dd->name}}</b> driver <r>NOT supperted for now</r>
+  <b>{{$dd->name}}</b> driver <r>NOT supported for now</r>
 ~if
 ~
 #.table.rewrite

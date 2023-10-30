@@ -81,7 +81,7 @@ class t_able extends \Model_t
 
     function tmp($file) {
         global $user;
-        $this->remove(qp('obj is null and dt_c + interval 1 day < now()')); # delete unfinished files
+        $this->remove(qp('obj is null and ' . $this->dd->f_dt('dt_c', '+', 1, 'day') . ' < $now')); # delete unfinished files
 
         if (!$file) {
             echo 'File don\'t transfered';
@@ -93,7 +93,7 @@ class t_able extends \Model_t
         }
         list ($mime, $ext, $out) = \upload\ant::type($file['tmp_name'], $file['name']);
         $id = $this->insert([
-            '!dt_c' => 'now()',
+            '!dt_c' => '$now',
             '.c_user_id' => $user->id,
             'name' => $file['name'],
             'size' => $file['size'],
