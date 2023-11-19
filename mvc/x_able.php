@@ -91,7 +91,7 @@ class t_able extends \Model_t
             echo $file['error'];
             return;
         }
-        list ($mime, $ext, $out) = \upload\ant::type($file['tmp_name'], $file['name']);
+        list ($mime, $ext, $out) = ant::type($file['tmp_name'], $file['name']);
         $id = $this->insert([
             '!dt_c' => '$now',
             '.c_user_id' => $user->id,
@@ -122,7 +122,7 @@ class t_able extends \Model_t
 
     function img_load($fn) {
         list($x, $y, $type) = getimagesize($fn);
-        if (!$this->ext_in = \upload\ant::$image[$type] ?? false)
+        if (!$this->ext_in = ant::$image[$type] ?? false)
             return false;
         $func = $this->handle[$this->ext_in];
         return [$x, $y, $func($fn)];

@@ -1,7 +1,7 @@
 <?php
 
 namespace upload;
-use Plan;
+use Plan, SQL, Display, Form;
 
 class ware extends \Wares
 {
@@ -13,7 +13,7 @@ class ware extends \Wares
             'connection' => ['Database connection', 'select', $this->databases()],
             'table' => ['Table name', '', '', 'file'],
             'dir' => ['Upload directory', '', '', 'var/upload'],
-            'use_crop' => ['Use crop', 'chk'],
+            'use_acl' => ['Use ALC ware', 'chk'],
             'crop_sizes' => ['Crop Sizes', '', '', '200 x 200,200 x 500'],
         ];
     }
@@ -25,7 +25,7 @@ class ware extends \Wares
         $exist = $model->get_table($table);
         $object = $this;
         $tune = Plan::_r(['main', 'wares.php'])['upload']['tune'];
-        return compact(array_keys(get_defined_vars()));
+        return get_defined_vars();
     }
 
     function install($mode) {
@@ -36,7 +36,7 @@ class ware extends \Wares
             is_dir($dir) or mkdir($dir, 0777, true);
             if (!$exist) {
                 $sql = str_replace('%engine%', $this->engines[$_POST['engine'] ?? 0], $sql);
-                $dd->sqlf(\SQL::NO_PARSE, trim($sql)); //2do: use migrations
+                $dd->sqlf(SQL::NO_PARSE, trim($sql)); //2do: use migrations
             }
             echo 'OK';
             return;
@@ -54,9 +54,9 @@ class ware extends \Wares
             $form += ['engine' => ['Select %engine%', 'select', $this->engines]];
         unset($_POST['mode']);
         return [
-            'md' => \Display::md(Plan::_g('README.md')),
-            'license' => \Display::bash(Plan::_g('LICENSE')),
-            'form' => \Form::A([], $form + [
+            'md' => Display::md(Plan::_g('README.md')),
+            'license' => Display::bash(Plan::_g('LICENSE')),
+            'form' => Form::A([], $form + [
                 9 => ['<b>Manual step:</b><br>Add/check rewrite for this ware', 'ni', $rewrite],
                 ['Finalize', 'button', "onclick=\"$ajax\""]
             ]),

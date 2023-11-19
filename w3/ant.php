@@ -1,8 +1,7 @@
 <?php
 
 namespace upload;
-use Plan;
-use finfo;
+use SKY, Plan, MVC, Rare, finfo;
 
 class ant
 {
@@ -13,12 +12,12 @@ class ant
     ];
 
     static function cfg() {
-        return (object)\SKY::$plans['upload']['app']['options'];
+        return (object)SKY::$plans['upload']['app']['options'];
     }
 
     static function model() {
         $prev = Plan::set('upload');
-        $model = \MVC::$mc->x_able;
+        $model = MVC::$mc->x_able;
         Plan::$ware = $prev;
         return $model;
     }
@@ -54,7 +53,7 @@ class ant
             }
             $ap .= " $data[0] $data[1]";
         } elseif ('text/' == substr($mime, 0, 5)) {
-            $ap .= ' ' . \Rare::enc_detect(self::read_len($fn));
+            $ap .= ' ' . Rare::enc_detect(self::read_len($fn));
         }
         return [$ap, $ext, $out];
     }
