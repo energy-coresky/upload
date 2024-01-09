@@ -10,7 +10,7 @@ class ware extends \Wares
 
     function form() {
         return [
-            'connection' => ['Database connection', 'select', $this->databases()],
+            'connection' => ['Database connection', 'select', \DEV::databases(['main'])],
             'table' => ['Table name', '', '', 'file'],
             'dir' => ['Upload directory', '', '', 'var/upload'],
             'use_acl' => ['Use ALC ware', 'chk'],

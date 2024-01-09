@@ -19,7 +19,7 @@ class t_able extends \Model_t
         $cfg = ant::cfg();
         $this->dir = $cfg->dir;
         $this->table = $cfg->table;
-        return \SQL::open($cfg->connection);
+        return \SQL::open($cfg->connection, 'main');
     }
 
     function get_dir() {
