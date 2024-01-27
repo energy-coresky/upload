@@ -25,10 +25,13 @@ if ($cnt && 'upload' == $surl[0]) {
 }
 ```
 
-## For j_.. actions add to HTML:
-```html
-<script src="w/upload/upload.js"></script>
-<script>upload.jact = 'upload'</script>
+## Attach upload.js:
+Add on the backend:
+```php
+# place upload.js to the tail
+upload\ant::init();
+# or place upload.js to the head
+upload\ant::init('head');
 ```
 
 Where 'upload' - tuning value (any of `/^[\w+\-]+$/`)

@@ -1,4 +1,7 @@
 core:
   plans:
-    view: {path: __DIR__/mvc}
-    app: {type: prod, flags: tune}
+    app:
+      type: prod
+      flags: tune
+      require: ACM
+    view: {path: $SELF/mvc}

@@ -17,7 +17,7 @@ $.fn.serializeFiles = function() {
 };
 
 var upload = {
-    jact: 'main',
+    tune: '',
     max_filesize: 5000000,
     post_files: false,
 
@@ -67,12 +67,12 @@ var upload = {
                                     box(h);
                                     r.place = el;
                                     upload.crop(r);
-                                }, 'crop_code', upload.jact);
+                                }, 'crop_code', upload.tune);
                             }
                         } else {
                             sky.err(r);
                         }
-                    }, 'file_tmp', upload.jact);
+                    }, 'file_tmp', upload.tune);
                 }
             });
         });
@@ -123,7 +123,7 @@ var upload = {
                     var html = '<a class="delete-img" href="javascript:;" onclick="upload.file_delete(this, ' + r.id + ')"></a>';
                     r.place.html('<img style="position:absolute" src="file?id' + r.id + '&_"/>' + html);
                     sky.hide();
-                }, 'crop', upload.jact);
+                }, 'crop', upload.tune);
             });
             $(document).mousemove(function(e) {
                 if (flag)
@@ -146,13 +146,13 @@ var upload = {
                 if (upload.file_delete_c)
                     upload.file_delete_c();
             }
-        }, 'delete', upload.jact);
+        }, 'delete', upload.tune);
     },
 
     skypost: null,
-    post: function(url, data, func, jact) {
+    post: function(url, data, func, tune) {
         if (!upload.post_files)
-            return upload.skypost(url, data, func, jact);
+            return upload.skypost(url, data, func, tune);
         var el = upload.post_files === true ? false : upload.post_files;
         upload.post_files = false;
         $.ajax({
@@ -164,7 +164,7 @@ var upload = {
             method: 'POST',
             type: 'POST', // For jQuery < 1.9
             success: func,
-            headers: {'X-Action-J': jact || 'main'},
+            headers: {'X-Action-J': tune || sky.tune},
             xhr: function() {
                 var a = $.ajaxSettings.xhr();
                 if (a.upload) {

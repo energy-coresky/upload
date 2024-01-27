@@ -15,6 +15,12 @@ class ant
         return (object)SKY::$plans['upload']['app']['options'];
     }
 
+    static function init($func = 'tail') {
+        $upload = array_flip(SKY::$plans['main']['ctrl'])['upload'];
+        $tune = explode('/', $upload)[0];
+        Plan::$func(js("upload.tune = '$tune'"), '~/w/upload/upload.js');
+    }
+
     static function model() {
         $prev = Plan::set('upload');
         $model = MVC::$mc->x_able;
