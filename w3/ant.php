@@ -16,8 +16,7 @@ class ant
     }
 
     static function init($func = 'tail') {
-        $upload = array_flip(SKY::$plans['main']['ctrl'])['upload'];
-        $tune = explode('/', $upload)[0];
+        $tune = Rare::tune('upload');
         Plan::$func(js("upload.tune = '$tune'"), '~/w/upload/upload.js');
     }
 
