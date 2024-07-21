@@ -5,6 +5,12 @@ use function qp;
 
 class t_able extends \Model_t
 {
+    private $image = [
+        IMAGETYPE_JPEG => 'jpg',
+        IMAGETYPE_PNG => 'png',
+        IMAGETYPE_GIF => 'gif',
+    ];
+
     private $handle = [
         'jpg' => 'imagecreatefromjpeg',
         'png' => 'imagecreatefrompng',
@@ -79,6 +85,37 @@ class t_able extends \Model_t
         return $cnt == count($tmp) ? $cnt : false;
     }
 
+    function read_len($fn, $len = 1e4) {
+        if (!$rc = fopen($fn, "rb"))
+            throw new \Error("Cannot open file `$fn` for reading");
+        $bin = fread($rc, $len);
+        fclose($rc);
+        return mb_strcut($bin, 0, $len);///????
+    }
+
+    function type($fn, $real_name = null) {
+        $mime = (new \finfo(FILEINFO_MIME_TYPE))->file($fn);
+        $ext = pathinfo($real_name ?? $fn)['extension'] ?? '?';
+        $type = "$mime $ext";
+        $ary = ['img' => 0];
+        if ('image/' == substr($mime, 0, 6)) {
+            $data = getimagesize($fn);
+            $ary += [
+                'width' => $data[0],
+                'height' => $data[1],
+            ];
+            $known = $this->image[$data[2]] ?? false;
+            if ($known && $data[0] && $data[1]) {
+                $ary['img'] = 1;
+                $type = "$mime " . ($ext = $known);
+            }
+            $type .= " $data[0] $data[1]";
+        } elseif ('text/' == substr($mime, 0, 5)) {
+            $type .= ' ' . \Rare::enc_detect($this->read_len($fn));
+        }
+        return [$type, $ext, $ary];
+    }
+
     function tmp($file) {
         global $user;
         $this->remove(qp('obj is null and ' . $this->dd->f_dt('dt_c', '+', 1, 'day') . ' < $now')); # delete unfinished files
@@ -91,16 +128,16 @@ class t_able extends \Model_t
             echo $file['error'];
             return;
         }
-        list ($mime, $ext, $out) = ant::type($file['tmp_name'], $file['name']);
+        [$type, $ext, $ary] = $this->type($file['tmp_name'], $file['name']);
         $id = $this->insert([
             '!dt_c' => '$now',
             '.c_user_id' => $user->id,
             'name' => $file['name'],
             'size' => $file['size'],
-            'type' => $file['type'] = $mime,
+            'type' => $file['type'] = $type,
         ]);
         if (move_uploaded_file($file['tmp_name'], "$this->dir/$id.$ext")) {
-            \json($out + ['id' => $id]);
+            \json($ary + ['id' => $id]);
             return;
         }
         $this->delete($id);
@@ -121,8 +158,8 @@ class t_able extends \Model_t
     }
 
     function img_load($fn) {
-        list($x, $y, $type) = getimagesize($fn);
-        if (!$this->ext_in = ant::$image[$type] ?? false)
+        [$x, $y, $type] = getimagesize($fn);
+        if (!$this->ext_in = $this->image[$type] ?? false)
             return false;
         $func = $this->handle[$this->ext_in];
         return [$x, $y, $func($fn)];

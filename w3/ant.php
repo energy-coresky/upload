@@ -1,30 +1,21 @@
 <?php
 
 namespace upload;
-use SKY, Plan, MVC, Rare, finfo;
+use SKY, Plan, MVC;
 
 class ant
 {
-    static $image = [
-        IMAGETYPE_JPEG => 'jpg',
-        IMAGETYPE_PNG => 'png',
-        IMAGETYPE_GIF => 'gif',
-    ];
-
     static function cfg() {
         return (object)SKY::$plans['upload']['app']['options'];
     }
 
     static function init($func = 'tail') {
-        $tune = Rare::tune('upload');
-        Plan::$func(js("upload.tune = '$tune'"), '~/w/upload/upload.js');
+        $tune = \Rare::tune('upload');
+        Plan::$func(\js("upload.tune = '$tune'"), '~/w/upload/upload.js');
     }
 
     static function model() {
-        $prev = Plan::set('upload');
-        $model = MVC::$mc->x_able;
-        Plan::$ware = $prev;
-        return $model;
+        return Plan::set('upload', fn() => MVC::$mc->x_able);
     }
 
     static function get_file($id, $is_download = false) {
@@ -32,34 +23,7 @@ class ant
         throw new \Stop;
     }
 
-    static function read_len($fn, $len = 1e4) {
-        if (!$rc = fopen($fn, "rb"))
-            throw new \Error("Cannot open file `$fn` for reading");
-        $bin = fread($rc, $len);
-        fclose($rc);
-        return mb_strcut($bin, 0, $len);///????
-    }
-
     static function type($fn, $real_name = null) {
-        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($fn);
-        $ext = pathinfo($real_name ?? $fn)['extension'] ?? '?';
-        $ap = "$mime $ext";
-        $out = ['img' => 0];
-        if ('image/' == substr($mime, 0, 6)) {
-            $data = getimagesize($fn);
-            $out += [
-                'width' => $data[0],
-                'height' => $data[1],
-            ];
-            $tmp = self::$image[$data[2]] ?? false;
-            if ($tmp && $data[0] && $data[1]) {
-                $out['img'] = 1;
-                $ap = "$mime " . ($ext = $tmp);
-            }
-            $ap .= " $data[0] $data[1]";
-        } elseif ('text/' == substr($mime, 0, 5)) {
-            $ap .= ' ' . Rare::enc_detect(self::read_len($fn));
-        }
-        return [$ap, $ext, $out];
+        return self::model()->type($fn, $real_name);
     }
 }
