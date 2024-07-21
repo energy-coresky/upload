@@ -70,3 +70,4 @@ class ware extends \Wares
     function update($mode) {
     }
 }
+
