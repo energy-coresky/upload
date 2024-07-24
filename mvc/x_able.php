@@ -136,6 +136,7 @@ class t_able extends \Model_t
             'size' => $file['size'],
             'type' => $file['type'] = $type,
         ]);
+        is_dir($this->dir) or mkdir($this->dir, 0777, true);
         if (move_uploaded_file($file['tmp_name'], "$this->dir/$id.$ext")) {
             \json($ary + ['id' => $id]);
             return;
