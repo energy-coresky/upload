@@ -1,7 +1,7 @@
 <?php
 
 namespace upload;
-use Plan, SQL, Display, Form;
+use Plan, SQL, Show, Form;
 
 class ware extends \Wares
 {
@@ -54,8 +54,8 @@ class ware extends \Wares
             $form += ['engine' => ['Select %engine%', 'select', $this->engines]];
         unset($_POST['mode']);
         return [
-            'md' => Display::md(Plan::_g('README.md')),
-            'license' => Display::bash(Plan::_g('LICENSE')),
+            'md' => Show::doc(Plan::_g('README.md')),
+            'license' => Show::bash(Plan::_g('LICENSE')),
             'form' => Form::A([], $form + [
                 9 => ['<b>Manual step:</b><br>Add/check rewrite for this ware', 'ni', $rewrite],
                 ['Finalize', 'button', "onclick=\"$ajax\""]

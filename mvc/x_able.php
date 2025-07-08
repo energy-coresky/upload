@@ -60,7 +60,7 @@ class t_able extends \Model_t
         }
         if ($is_php) {
             echo \css(['~/m/sky.css']);
-            echo \Display::php(file_get_contents($fn));
+            echo \Show::php(file_get_contents($fn));
         } else {
             readfile($fn);
         }
